@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="type">
+        <item>Minimum Number of Hops</item>
+        <item>Maximum Bus Route Availability</item>
+        <item>Via Terminal Bus Stations Only</item>
+        <item>Direct Routes Only</item>
+        <item>Shortest Distance</item>
+    </string-array>
+</resources>

@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FindYourBus</string>
+    <string name="google">Google</string>
+    <string name="login">Login</string>
+    <string name="app_logo">App Logo Icon</string>
+    <string name="to">To</string>
+    <string name="from">From</string>
+    <string name="type">Type</string>
+    <string name="search">Search</string>
+</resources>

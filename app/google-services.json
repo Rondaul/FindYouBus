@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "441993873057",
+    "firebase_url": "https://findyoubus.firebaseio.com",
+    "project_id": "findyoubus",
+    "storage_bucket": "findyoubus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:441993873057:android:0e7af8e1171eab5a",
+        "android_client_info": {
+          "package_name": "com.ronx.project.findyourbus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "441993873057-umguqoak4bv6lupnm8f1fo4e2ru5tith.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ronx.project.findyourbus",
+            "certificate_hash": "4fab3963b64f24c0510201911e1c1f1af3f94dc5"
+          }
+        },
+        {
+          "client_id": "441993873057-pketsig9nblp8fg74v6gl4glbiv6mvfs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCn3uNuixJbb-Sfvk5_3Plol9-kSpeGUhc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "441993873057-pketsig9nblp8fg74v6gl4glbiv6mvfs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
