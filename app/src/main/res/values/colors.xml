@@ -5,4 +5,8 @@
     <color name="colorAccent">#ff5252</color>
 
     <color name="ic_launcher_background">#9C27B0</color>
+    <color name="bg_main">#2e3237</color>
+    <color name="text_input">#888888</color>
+    <color name="bg_text_input">#3b4148</color>
+    <color name="input_hint">#5e6266</color>
 </resources>

@@ -13,5 +13,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ItemCardView" parent="CardView">
+        <item name="cardElevation">4dp</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+    </style>
 
 </resources>

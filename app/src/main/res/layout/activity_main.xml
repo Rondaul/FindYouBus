@@ -4,82 +4,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:id="@+id/tv_from"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/from"
-        android:textSize="@dimen/tv_textsize"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:background="@color/bg_main"
+    tools:context=".activity.MainActivity">
 
     <AutoCompleteTextView
         android:id="@+id/auto_tv_from"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:background="@color/bg_text_input"
         android:hint="From"
+        android:padding="@dimen/auto_tv_padding"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/input_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tv_from"
-        app:layout_constraintTop_toBottomOf="@+id/tv_from" />
-
-    <TextView
-        android:id="@+id/tv_to"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/to"
-        android:textSize="@dimen/tv_textsize"
-        app:layout_constraintStart_toStartOf="@+id/auto_tv_from"
-        app:layout_constraintTop_toBottomOf="@+id/auto_tv_from" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <AutoCompleteTextView
         android:id="@+id/auto_tv_to"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/bg_text_input"
         android:hint="To"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tv_to"
-        app:layout_constraintTop_toBottomOf="@+id/tv_to" />
+        android:padding="@dimen/auto_tv_padding"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/input_hint"
+        app:layout_constraintEnd_toEndOf="@+id/auto_tv_from"
+        app:layout_constraintStart_toStartOf="@+id/auto_tv_from"
+        app:layout_constraintTop_toBottomOf="@+id/auto_tv_from" />
 
     <TextView
         android:id="@+id/tv_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="@string/type"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/tv_textsize"
         app:layout_constraintStart_toStartOf="@+id/auto_tv_to"
         app:layout_constraintTop_toBottomOf="@+id/auto_tv_to" />
 
     <Spinner
         android:id="@+id/type_spinner"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:outlineAmbientShadowColor="@android:color/white"
+        android:outlineSpotShadowColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="@+id/auto_tv_to"
         app:layout_constraintStart_toStartOf="@+id/tv_type"
         app:layout_constraintTop_toBottomOf="@+id/tv_type" />
 
     <Button
         android:id="@+id/btn_search"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="@string/search"
+        android:elevation="@dimen/button_elevation"
+        android:background="@drawable/search_rounded_background"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/type_spinner" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/recent_searches"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/tv_textsize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_search" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_recent_searches"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
 </android.support.constraint.ConstraintLayout>
