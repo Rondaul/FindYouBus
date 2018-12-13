@@ -2,6 +2,7 @@ package com.ronx.project.findyourbus.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -32,6 +33,14 @@ public class ResultActivity extends AppCompatActivity {
     TextView mFromTextView;
     @BindView(R.id.tv_to)
     TextView mToTextView;
+    @BindView(R.id.tv_distance)
+    TextView mDistanceTextView;
+    @BindView(R.id.tv_duration)
+    TextView mDurationTextView;
+    @BindView(R.id.tv_type)
+    TextView mTypeTextView;
+    @BindView(R.id.rv_bus_nos)
+    RecyclerView mBusNosRecyclerview;
 
     private RetrofitInterface mRetrofitInterface;
 
@@ -47,6 +56,7 @@ public class ResultActivity extends AppCompatActivity {
 
         mFromTextView.setText(from);
         mToTextView.setText(to);
+        mTypeTextView.setText(type);
 
         mRetrofitInterface = RetrofitClient.getRetrofitClient()
                 .create(RetrofitInterface.class);
@@ -59,6 +69,10 @@ public class ResultActivity extends AppCompatActivity {
                 while (it.hasNext()) {
                     Map.Entry pair = (Map.Entry) it.next();
                     List<RouteDetails> list = (List<RouteDetails>) pair.getValue();
+                    for(RouteDetails routeDetails : list) {
+                        String distance = routeDetails.getDistance();
+                        Log.d(TAG, "onResponse: distance" + distance);
+                    }
                     Log.d(TAG, "onResponse: size" + list.size());
                     Log.d(TAG, "onResponse: "+  pair.getKey() + " = " + pair.getValue());
                 }

@@ -12,4 +12,4 @@
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="8dp"
     android:textSize="@dimen/spinner_textsize"
-    android:textColor="@android:color/black" />
+    android:textColor="@android:color/white" />

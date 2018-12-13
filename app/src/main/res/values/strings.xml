@@ -8,4 +8,8 @@
     <string name="type">Type</string>
     <string name="search">Search</string>
     <string name="recent_searches">Recent Searches</string>
+    <string name="distance">Distance</string>
+    <string name="duration">Duration</string>
+    <string name="bus_no">Bus Nos.</string>
+    <string name="empty_string_message">Some fields are empty! Please try again!</string>
 </resources>

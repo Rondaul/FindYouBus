@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.ronx.project.findyourbus.R;
 import com.ronx.project.findyourbus.adapters.SearchAdapter;
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(this,
                 R.array.type, R.layout.type_spinner_layout);
 
-        typeAdapter.setDropDownViewResource(R.layout.type_spinner_layout);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         mTypeSpinner.setAdapter(typeAdapter);
 
@@ -152,27 +153,31 @@ public class MainActivity extends AppCompatActivity {
                         "to = " + to +
                         "type = " + type);
 
-                final SearchEntry searchEntry = new SearchEntry(from, to, type, date);
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        List<SearchEntry> searchEntries = mSearchAdapter.getSearchEntries();
-                        for(SearchEntry entry : searchEntries) {
-                            if(entry.getFrom().equals(from) && entry.getTo().equals(to)) {
-                                mDb.searchDao().deleteSearch(entry);
+                if(from.equals("") || to.equals("") || type.equals("")) {
+                    Toast.makeText(MainActivity.this, getString(R.string.empty_string_message), Toast.LENGTH_SHORT).show();
+                } else {
+                    final SearchEntry searchEntry = new SearchEntry(from, to, type, date);
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<SearchEntry> searchEntries = mSearchAdapter.getSearchEntries();
+                            for(SearchEntry entry : searchEntries) {
+                                if(entry.getFrom().equals(from) && entry.getTo().equals(to)) {
+                                    mDb.searchDao().deleteSearch(entry);
+                                }
                             }
+                            mDb.searchDao().insertSearch(searchEntry);
                         }
-                        mDb.searchDao().insertSearch(searchEntry);
+                    });
+
+                    Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+                    intent.putExtra(ResultActivity.FROM, from);
+                    intent.putExtra(ResultActivity.TO, to);
+                    intent.putExtra(ResultActivity.TYPE, type);
+
+                    if(intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
                     }
-                });
-
-                Intent intent = new Intent(MainActivity.this, ResultActivity.class);
-                intent.putExtra(ResultActivity.FROM, from);
-                intent.putExtra(ResultActivity.TO, to);
-                intent.putExtra(ResultActivity.TYPE, type);
-
-                if(intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
                 }
             }
         });
