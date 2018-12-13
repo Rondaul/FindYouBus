@@ -5,8 +5,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ronx.project.findyourbus.R;
@@ -41,6 +43,8 @@ public class ResultActivity extends AppCompatActivity {
     TextView mRouteCountTextView;
     @BindView(R.id.detail_toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
 
     private RetrofitInterface mRetrofitInterface;
 
@@ -60,10 +64,14 @@ public class ResultActivity extends AppCompatActivity {
         mRetrofitInterface = RetrofitClient.getRetrofitClient()
                 .create(RetrofitInterface.class);
 
+        mProgressBar.setVisibility(View.VISIBLE);
+
         Call<HashMap<String,List<RouteDetails>>> call = mRetrofitInterface.getRouteDetails(from, to, type);
         call.enqueue(new Callback<HashMap<String, List<RouteDetails>>>() {
             @Override
             public void onResponse(Call<HashMap<String, List<RouteDetails>>> call, Response<HashMap<String, List<RouteDetails>>> response) {
+                Log.d(TAG, "onResponse: " + response.body().size());
+                mProgressBar.setVisibility(View.GONE);
                 final RouteFragmentPagerAdapter adapter = new RouteFragmentPagerAdapter(getApplicationContext(), response.body(), getSupportFragmentManager());
                 mRouteViewPager.setAdapter(adapter);
 
@@ -91,5 +99,18 @@ public class ResultActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure: " + t.toString());
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int selectedId = item.getItemId();
+
+        if(selectedId == android.R.id.home) {
+            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

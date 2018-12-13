@@ -57,8 +57,6 @@ public class SingleRouteAdapter extends RecyclerView.Adapter<SingleRouteAdapter.
         TextView mDistanceTextView;
         @BindView(R.id.tv_duration)
         TextView mDurationTextView;
-        @BindView(R.id.tv_type)
-        TextView mTypeTextView;
         @BindView(R.id.rv_bus_nos)
         RecyclerView mBusNoRecycleView;
         public SingleRouteViewHolder(@NonNull View itemView) {
@@ -71,6 +69,8 @@ public class SingleRouteAdapter extends RecyclerView.Adapter<SingleRouteAdapter.
             mFromTextView.setText(routeDetails.getFrom());
             mHopNoTextView.setText(String.format("Hop: %s", routeDetails.getHop()));
             mToTextView.setText(routeDetails.getTo());
+            mDistanceTextView.setText(routeDetails.getDistance());
+            mDurationTextView.setText(routeDetails.getDuration());
 
         }
     }
