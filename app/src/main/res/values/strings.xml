@@ -11,5 +11,8 @@
     <string name="distance">Distance</string>
     <string name="duration">Duration</string>
     <string name="bus_no">Bus Nos.</string>
+    <string name="route">Route %d</string>
     <string name="empty_string_message">Some fields are empty! Please try again!</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 </resources>

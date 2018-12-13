@@ -1,22 +1,30 @@
 package com.ronx.project.findyourbus.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-
-public class RouteDetails implements Serializable {
+public class RouteDetails implements Parcelable {
 
     @SerializedName("Hop")
+    @Expose
     private String hop;
     @SerializedName("distance")
+    @Expose
     private String distance;
     @SerializedName("To")
+    @Expose
     private String to;
     @SerializedName("From")
+    @Expose
     private String from;
     @SerializedName("duration")
+    @Expose
     private String duration;
     @SerializedName("bus_nos")
+    @Expose
     private String busNo;
 
     public RouteDetails() {
@@ -30,6 +38,27 @@ public class RouteDetails implements Serializable {
         this.duration = duration;
         this.busNo = busNo;
     }
+
+    protected RouteDetails(Parcel in) {
+        hop = in.readString();
+        distance = in.readString();
+        to = in.readString();
+        from = in.readString();
+        duration = in.readString();
+        busNo = in.readString();
+    }
+
+    public static final Creator<RouteDetails> CREATOR = new Creator<RouteDetails>() {
+        @Override
+        public RouteDetails createFromParcel(Parcel in) {
+            return new RouteDetails(in);
+        }
+
+        @Override
+        public RouteDetails[] newArray(int size) {
+            return new RouteDetails[size];
+        }
+    };
 
     public String getHop() {
         return hop;
@@ -77,5 +106,20 @@ public class RouteDetails implements Serializable {
 
     public void setBusNo(String busNo) {
         this.busNo = busNo;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(hop);
+        dest.writeString(distance);
+        dest.writeString(to);
+        dest.writeString(from);
+        dest.writeString(duration);
+        dest.writeString(busNo);
     }
 }

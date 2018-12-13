@@ -23,4 +23,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="cardMargin">8dp</dimen>
+    <dimen name="step_count_size">22sp</dimen>
+    <dimen name="cardCornerRadius">4dp</dimen>
+    <dimen name="hop_size">18sp</dimen>
 </resources>

@@ -1,20 +1,22 @@
 package com.ronx.project.findyourbus.activity;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.ronx.project.findyourbus.R;
+import com.ronx.project.findyourbus.adapters.RouteFragmentPagerAdapter;
 import com.ronx.project.findyourbus.model.RouteDetails;
 import com.ronx.project.findyourbus.rest_api.RetrofitClient;
 import com.ronx.project.findyourbus.rest_api.RetrofitInterface;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,18 +31,16 @@ public class ResultActivity extends AppCompatActivity {
     public static final String FROM = "from";
     public static final String TYPE = "type";
 
-    @BindView(R.id.tv_from)
-    TextView mFromTextView;
-    @BindView(R.id.tv_to)
-    TextView mToTextView;
-    @BindView(R.id.tv_distance)
-    TextView mDistanceTextView;
-    @BindView(R.id.tv_duration)
-    TextView mDurationTextView;
-    @BindView(R.id.tv_type)
-    TextView mTypeTextView;
-    @BindView(R.id.rv_bus_nos)
-    RecyclerView mBusNosRecyclerview;
+    @BindView(R.id.route_viewpager)
+    ViewPager mRouteViewPager;
+    @BindView(R.id.btn_next)
+    Button mNextButton;
+    @BindView(R.id.btn_previous)
+    Button mPreviousButton;
+    @BindView(R.id.tv_route_count)
+    TextView mRouteCountTextView;
+    @BindView(R.id.detail_toolbar)
+    Toolbar mToolbar;
 
     private RetrofitInterface mRetrofitInterface;
 
@@ -54,9 +54,8 @@ public class ResultActivity extends AppCompatActivity {
         String to = getIntent().getExtras().getString(TO);
         String type = getIntent().getExtras().getString(TYPE);
 
-        mFromTextView.setText(from);
-        mToTextView.setText(to);
-        mTypeTextView.setText(type);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRetrofitInterface = RetrofitClient.getRetrofitClient()
                 .create(RetrofitInterface.class);
@@ -65,17 +64,26 @@ public class ResultActivity extends AppCompatActivity {
         call.enqueue(new Callback<HashMap<String, List<RouteDetails>>>() {
             @Override
             public void onResponse(Call<HashMap<String, List<RouteDetails>>> call, Response<HashMap<String, List<RouteDetails>>> response) {
-                Iterator it = response.body().entrySet().iterator();
-                while (it.hasNext()) {
-                    Map.Entry pair = (Map.Entry) it.next();
-                    List<RouteDetails> list = (List<RouteDetails>) pair.getValue();
-                    for(RouteDetails routeDetails : list) {
-                        String distance = routeDetails.getDistance();
-                        Log.d(TAG, "onResponse: distance" + distance);
+                final RouteFragmentPagerAdapter adapter = new RouteFragmentPagerAdapter(getApplicationContext(), response.body(), getSupportFragmentManager());
+                mRouteViewPager.setAdapter(adapter);
+
+                mRouteCountTextView.setText(adapter.getPageTitle(mRouteViewPager.getCurrentItem()));
+
+                mNextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mRouteViewPager.setCurrentItem(mRouteViewPager.getCurrentItem() + 1);
+                        mRouteCountTextView.setText(adapter.getPageTitle(mRouteViewPager.getCurrentItem()));
                     }
-                    Log.d(TAG, "onResponse: size" + list.size());
-                    Log.d(TAG, "onResponse: "+  pair.getKey() + " = " + pair.getValue());
-                }
+                });
+
+                mPreviousButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mRouteViewPager.setCurrentItem(mRouteViewPager.getCurrentItem() - 1);
+                        mRouteCountTextView.setText(adapter.getPageTitle(mRouteViewPager.getCurrentItem()));
+                    }
+                });
             }
 
             @Override
