@@ -15,4 +15,15 @@
     <string name="empty_string_message">Some fields are empty! Please try again!</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+    <string name="appwidget_text">FindYourBus</string>
+    <string name="add_widget">Add widget</string>
+    <string name="recent_search">Recent Search</string>
+    <string name="widget_route_key">widget_recipe_key</string>
+    <string name="add_to_widget">Add To Widget</string>
+    <string name="added_to_widget">Route is added to widget!</string>
+    <string name="error_message">Fail to get results.Please try again!</string>
+
+    <!--Admob Strings-->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ad_id">ca-app-pub-6428454575275604~8407029949</string>
 </resources>

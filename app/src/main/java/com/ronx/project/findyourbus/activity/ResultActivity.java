@@ -5,20 +5,29 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.ronx.project.findyourbus.R;
 import com.ronx.project.findyourbus.adapters.RouteFragmentPagerAdapter;
+import com.ronx.project.findyourbus.model.Route;
 import com.ronx.project.findyourbus.model.RouteDetails;
 import com.ronx.project.findyourbus.rest_api.RetrofitClient;
 import com.ronx.project.findyourbus.rest_api.RetrofitInterface;
+import com.ronx.project.findyourbus.utils.SnackbarFactory;
+import com.ronx.project.findyourbus.widget.BusWidgetService;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,14 +54,23 @@ public class ResultActivity extends AppCompatActivity {
     Toolbar mToolbar;
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+    @BindView(android.R.id.content)
+    View mParentLayout;
+    @BindView(R.id.adView)
+    AdView mAdView;
 
     private RetrofitInterface mRetrofitInterface;
+
+    private Route mRoute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         ButterKnife.bind(this);
+
+        MobileAds.initialize(this, getString(R.string.ad_id));
+        initAddMob();
 
         String from = getIntent().getExtras().getString(FROM);
         String to = getIntent().getExtras().getString(TO);
@@ -72,42 +90,51 @@ public class ResultActivity extends AppCompatActivity {
             public void onResponse(Call<HashMap<String, List<RouteDetails>>> call, Response<HashMap<String, List<RouteDetails>>> response) {
                 Log.d(TAG, "onResponse: " + response.body().size());
                 mProgressBar.setVisibility(View.GONE);
-                final RouteFragmentPagerAdapter adapter = new RouteFragmentPagerAdapter(getApplicationContext(), response.body(), getSupportFragmentManager());
-                mRouteViewPager.setAdapter(adapter);
+                HashMap<String, List<RouteDetails>> hashMap = response.body();
 
-                mRouteCountTextView.setText(adapter.getPageTitle(mRouteViewPager.getCurrentItem()));
+                if(hashMap != null) {
 
-                mRouteViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int i, float v, int i1) {
+                    Map.Entry<String,List<RouteDetails>> entry = hashMap.entrySet().iterator().next();
+                    mRoute = new Route(entry.getValue());
+                    final RouteFragmentPagerAdapter adapter = new RouteFragmentPagerAdapter(getApplicationContext(), response.body(), getSupportFragmentManager());
+                    mRouteViewPager.setAdapter(adapter);
 
-                    }
+                    mRouteCountTextView.setText(adapter.getPageTitle(mRouteViewPager.getCurrentItem()));
 
-                    @Override
-                    public void onPageSelected(int i) {
-                        mRouteCountTextView.setText(adapter.getPageTitle(i));
-                    }
+                    mRouteViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                        @Override
+                        public void onPageScrolled(int i, float v, int i1) {
 
-                    @Override
-                    public void onPageScrollStateChanged(int i) {
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onPageSelected(int i) {
+                            mRouteCountTextView.setText(adapter.getPageTitle(i));
+                        }
 
-                mNextButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mRouteViewPager.setCurrentItem(mRouteViewPager.getCurrentItem() + 1);
+                        @Override
+                        public void onPageScrollStateChanged(int i) {
 
-                    }
-                });
+                        }
+                    });
 
-                mPreviousButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mRouteViewPager.setCurrentItem(mRouteViewPager.getCurrentItem() - 1);
-                    }
-                });
+                    mNextButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mRouteViewPager.setCurrentItem(mRouteViewPager.getCurrentItem() + 1);
+
+                        }
+                    });
+
+                    mPreviousButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mRouteViewPager.setCurrentItem(mRouteViewPager.getCurrentItem() - 1);
+                        }
+                    });
+                } else {
+                    Toast.makeText(ResultActivity.this, getString(R.string.error_message), Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -115,6 +142,19 @@ public class ResultActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure: " + t.toString());
             }
         });
+    }
+
+    private void initAddMob() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.add_menu, menu);
+        return true;
     }
 
     @Override
@@ -125,6 +165,16 @@ public class ResultActivity extends AppCompatActivity {
         if(selectedId == android.R.id.home) {
             overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             finish();
+            return true;
+        } else if(selectedId == R.id.action_add_to_widget) {
+            String message;
+            if(mRoute != null) {
+                BusWidgetService.updateWidget(this, mRoute);
+                message = getString(R.string.added_to_widget);
+            } else {
+                message = getString(R.string.error_message);
+            }
+            SnackbarFactory.makeSnackBar(this, mParentLayout, message, false);
             return true;
         }
         return super.onOptionsItemSelected(item);

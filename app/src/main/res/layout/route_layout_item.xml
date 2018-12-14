@@ -106,7 +106,7 @@
         <TextView
             android:id="@+id/tv_distance"
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/label_distance"
             app:layout_constraintEnd_toEndOf="@+id/tv_to"
             app:layout_constraintTop_toTopOf="@+id/label_distance"
