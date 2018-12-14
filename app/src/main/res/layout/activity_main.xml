@@ -15,7 +15,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:background="@color/bg_text_input"
-        android:hint="From"
+        android:hint="@string/hint_from"
         android:padding="@dimen/auto_tv_padding"
         android:textColor="@android:color/white"
         android:textColorHint="@color/input_hint"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@color/bg_text_input"
-        android:hint="To"
+        android:hint="@string/hint_to"
         android:padding="@dimen/auto_tv_padding"
         android:textColor="@android:color/white"
         android:textColorHint="@color/input_hint"
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="8dp"
             android:background="@android:color/transparent"
             android:gravity="center"
@@ -79,10 +79,11 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_gravity="center"
-            android:layout_marginRight="0dp"
-            android:src="@drawable/dropdown" />
+            android:layout_marginEnd="0dp"
+            android:src="@drawable/dropdown"
+            android:contentDescription="@string/spinner_dropdown" />
 
     </RelativeLayout>
 

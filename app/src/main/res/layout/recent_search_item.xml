@@ -54,7 +54,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/tv_from"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="@+id/tv_from"
-            app:srcCompat="@drawable/ic_left" />
+            app:srcCompat="@drawable/ic_left"
+            android:contentDescription="@string/left_arrow" />
 
         <ImageView
             android:id="@+id/imageView6"
@@ -63,7 +64,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageView5"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="@+id/imageView5"
-            app:srcCompat="@drawable/ic_right" />
+            app:srcCompat="@drawable/ic_right"
+            android:contentDescription="@string/right_arrow" />
 
         <ImageView
             android:id="@+id/iv_cancel"
@@ -75,7 +77,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_cancel" />
+            app:srcCompat="@drawable/ic_cancel"
+            android:contentDescription="@string/cancel_button" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline"
