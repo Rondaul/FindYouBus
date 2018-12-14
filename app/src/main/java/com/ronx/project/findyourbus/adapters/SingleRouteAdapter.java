@@ -3,6 +3,7 @@ package com.ronx.project.findyourbus.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,17 @@ import android.widget.TextView;
 
 import com.ronx.project.findyourbus.R;
 import com.ronx.project.findyourbus.model.RouteDetails;
+import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SingleRouteAdapter extends RecyclerView.Adapter<SingleRouteAdapter.SingleRouteViewHolder> {
+
+    public static final String TAG = SingleRouteAdapter.class.getSimpleName();
 
     private Context mContext;
     private List<RouteDetails> mRouteDetailsList;
@@ -71,6 +76,22 @@ public class SingleRouteAdapter extends RecyclerView.Adapter<SingleRouteAdapter.
             mToTextView.setText(routeDetails.getTo());
             mDistanceTextView.setText(routeDetails.getDistance());
             mDurationTextView.setText(routeDetails.getDuration());
+
+            String busNo = routeDetails.getBusNo();
+            String [] splitArrays = busNo.split(", ");
+            List<String> busNoList = new ArrayList<>();
+            for(String s : splitArrays) {
+                busNoList.add(s);
+            }
+
+            Log.d(TAG, "bind: bustlistSize = " + busNoList.size());
+
+            FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
+            flowLayoutManager.setAutoMeasureEnabled(true);
+            mBusNoRecycleView.setLayoutManager(flowLayoutManager);
+
+            BusNoAdapter busNoAdapter = new BusNoAdapter(mContext, busNoList);
+            mBusNoRecycleView.setAdapter(busNoAdapter);
 
         }
     }

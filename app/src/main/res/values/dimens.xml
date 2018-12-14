@@ -26,4 +26,8 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="step_count_size">22sp</dimen>
     <dimen name="cardCornerRadius">4dp</dimen>
     <dimen name="hop_size">18sp</dimen>
+    <dimen name="busCardCornerRadius">10dp</dimen>
+    <dimen name="bus_horizontal_dimen">16dp</dimen>
+    <dimen name="bus_vertical_dimen">7dp</dimen>
+    <dimen name="busCardMargin">16dp</dimen>
 </resources>

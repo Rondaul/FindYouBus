@@ -77,11 +77,28 @@ public class ResultActivity extends AppCompatActivity {
 
                 mRouteCountTextView.setText(adapter.getPageTitle(mRouteViewPager.getCurrentItem()));
 
+                mRouteViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int i, float v, int i1) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int i) {
+                        mRouteCountTextView.setText(adapter.getPageTitle(i));
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int i) {
+
+                    }
+                });
+
                 mNextButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mRouteViewPager.setCurrentItem(mRouteViewPager.getCurrentItem() + 1);
-                        mRouteCountTextView.setText(adapter.getPageTitle(mRouteViewPager.getCurrentItem()));
+
                     }
                 });
 
@@ -89,7 +106,6 @@ public class ResultActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         mRouteViewPager.setCurrentItem(mRouteViewPager.getCurrentItem() - 1);
-                        mRouteCountTextView.setText(adapter.getPageTitle(mRouteViewPager.getCurrentItem()));
                     }
                 });
             }

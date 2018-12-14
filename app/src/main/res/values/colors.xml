@@ -8,5 +8,5 @@
     <color name="bg_main">#2e3237</color>
     <color name="text_input">#888888</color>
     <color name="bg_text_input">#3b4148</color>
-    <color name="input_hint">#5e6266</color>
+    <color name="input_hint">#888888</color>
 </resources>
