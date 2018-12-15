@@ -5,10 +5,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,6 +44,7 @@ public class ResultActivity extends AppCompatActivity {
     public static final String TO = "to";
     public static final String FROM = "from";
     public static final String TYPE = "type";
+    private static final String PROGRESSBAR_STATUS = "progressbar_status";
 
     @BindView(R.id.route_viewpager)
     ViewPager mRouteViewPager;
@@ -65,13 +68,24 @@ public class ResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            // inside your activity (if you did not enable transitions in your theme)
+            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+// set an enter transition
+            getWindow().setEnterTransition(new Explode());
+// set an exit transition
+            getWindow().setExitTransition(new Explode());
+
+        }
+
         setContentView(R.layout.activity_result);
         ButterKnife.bind(this);
 
         MobileAds.initialize(this, getString(R.string.ad_id));
         initAddMob();
 
-        if(getIntent().getExtras() != null) {
+        if (getIntent().getExtras() != null) {
             String from = getIntent().getExtras().getString(FROM);
             String to = getIntent().getExtras().getString(TO);
             String type = getIntent().getExtras().getString(TYPE);
@@ -86,6 +100,7 @@ public class ResultActivity extends AppCompatActivity {
 
             Call<HashMap<String, List<RouteDetails>>> call = retrofitInterface.getRouteDetails(from, to, type);
             call.enqueue(new Callback<HashMap<String, List<RouteDetails>>>() {
+
                 @Override
                 public void onResponse(@NonNull Call<HashMap<String, List<RouteDetails>>> call, @NonNull Response<HashMap<String, List<RouteDetails>>> response) {
                     mProgressBar.setVisibility(View.GONE);
@@ -132,6 +147,7 @@ public class ResultActivity extends AppCompatActivity {
                             }
                         });
                     } else {
+                        mProgressBar.setVisibility(View.GONE);
                         Toast.makeText(ResultActivity.this, getString(R.string.error_message), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -165,8 +181,7 @@ public class ResultActivity extends AppCompatActivity {
         int selectedId = item.getItemId();
 
         if (selectedId == android.R.id.home) {
-            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-            finish();
+            supportFinishAfterTransition();
             return true;
         } else if (selectedId == R.id.action_add_to_widget) {
             String message;
@@ -180,5 +195,13 @@ public class ResultActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mRoute != null) {
+            mProgressBar.setVisibility(View.GONE);
+        }
     }
 }

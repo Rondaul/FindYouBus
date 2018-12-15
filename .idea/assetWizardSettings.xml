@@ -55,10 +55,11 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="imageAsset" value="$PROJECT_DIR$/../../../GnaniProjects/AndroidProjects/e-pronouncer/app/src/main/res/drawable-xxhdpi/ic_google.png" />
-                                      <entry key="outputName" value="ic_cancel" />
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="$PROJECT_DIR$/app/src/main/res/drawable/bus_icon.png" />
+                                      <entry key="outputName" value="ic_bus_icon" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="555555" />
+                                      <entry key="themeColor" value="000000" />
                                     </map>
                                   </option>
                                 </PersistentState>

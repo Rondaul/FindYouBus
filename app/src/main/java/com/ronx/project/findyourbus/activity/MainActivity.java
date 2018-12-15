@@ -1,5 +1,6 @@
 package com.ronx.project.findyourbus.activity;
 
+import android.app.ActivityOptions;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -11,8 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.transition.Explode;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -59,6 +63,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            // inside your activity (if you did not enable transitions in your theme)
+            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+
+            Transition explode = new Explode();
+            explode.excludeTarget(android.R.id.statusBarBackground, true);
+            explode.excludeTarget(android.R.id.navigationBarBackground, true);
+// set an enter transition
+            getWindow().setEnterTransition(explode);
+// set an exit transition
+            getWindow().setExitTransition(explode);
+
+        }
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -88,7 +106,12 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(ResultActivity.TYPE, type);
 
                 if(intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle();
+                        startActivity(intent, bundle);
+                    } else {
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -177,7 +200,12 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra(ResultActivity.TYPE, type);
 
                     if(intent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(intent);
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle();
+                            startActivity(intent, bundle);
+                        } else {
+                            startActivity(intent);
+                        }
                     }
                 }
             }
