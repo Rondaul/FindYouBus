@@ -17,7 +17,6 @@ public class BusWidgetService extends RemoteViewsService {
     public static void updateWidget(Context context, Route route) {
 
         Prefs.saveRouteDetails(context, route);
-
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, BusWidgetProvider.class));
         BusWidgetProvider.updateAppWidgets(context, appWidgetManager, appWidgetIds);

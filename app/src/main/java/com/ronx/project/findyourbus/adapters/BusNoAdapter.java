@@ -20,7 +20,7 @@ public class BusNoAdapter extends RecyclerView.Adapter<BusNoAdapter.BusNoViewHol
     private Context mContext;
     private List<String> busNoList;
 
-    public BusNoAdapter(Context context, List<String> busNoList) {
+    BusNoAdapter(Context context, List<String> busNoList) {
         mContext = context;
         this.busNoList = busNoList;
     }
@@ -43,17 +43,17 @@ public class BusNoAdapter extends RecyclerView.Adapter<BusNoAdapter.BusNoViewHol
         return busNoList.size();
     }
 
-    public class BusNoViewHolder extends RecyclerView.ViewHolder {
+    class BusNoViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.bus_no)
         TextView mBusNoTextView;
 
-        public BusNoViewHolder(@NonNull View itemView) {
+        BusNoViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(int position) {
+        void bind(int position) {
             String busNo = busNoList.get(position);
             mBusNoTextView.setText(busNo);
         }

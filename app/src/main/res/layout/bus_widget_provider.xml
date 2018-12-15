@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/margin_small"
-        android:text="@string/recent_search"
+        android:text="@string/search_data_not_available"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_medium" />
 

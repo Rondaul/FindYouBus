@@ -12,26 +12,18 @@ import android.widget.TextView;
 import com.ronx.project.findyourbus.R;
 import com.ronx.project.findyourbus.database.SearchEntry;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
 
-    // Constant for date format
-    private static final String DATE_FORMAT = "dd/MM/yyy";
-
     private OnCancelClickListener mOnCancelClickListener;
     private OnItemClickListener mOnItemClickListener;
     private List<SearchEntry> mSearchEntries;
     private Context mContext;
-
-    // Date formatter
-    private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
 
     public interface OnCancelClickListener {
@@ -78,7 +70,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         notifyDataSetChanged();
     }
 
-    public class SearchViewHolder extends RecyclerView.ViewHolder {
+    class SearchViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_from)
         TextView mFromTextView;
@@ -87,12 +79,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         @BindView(R.id.iv_cancel)
         ImageView deleteImageView;
 
-        public SearchViewHolder(@NonNull View itemView) {
+        SearchViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(int position) {
+        void bind(int position) {
             final SearchEntry searchEntry = mSearchEntries.get(position);
             String from = searchEntry.getFrom();
             String to = searchEntry.getTo();

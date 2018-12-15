@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Google SignIn failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.google_singin_fail), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -132,11 +132,11 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void updateUI(FirebaseUser firebaseUser) {
         if (firebaseUser != null) {
-            Toast.makeText(this, "Authentication Successful!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.auth_success), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, MainActivity.class));
             finish();
         } else {
-            Toast.makeText(this, "Authentication Failed! Please try again!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.auth_fail), Toast.LENGTH_SHORT).show();
         }
     }
 }

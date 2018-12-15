@@ -1,6 +1,7 @@
 package com.ronx.project.findyourbus.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -59,8 +60,6 @@ public class ResultActivity extends AppCompatActivity {
     @BindView(R.id.adView)
     AdView mAdView;
 
-    private RetrofitInterface mRetrofitInterface;
-
     private Route mRoute;
 
     @Override
@@ -72,76 +71,79 @@ public class ResultActivity extends AppCompatActivity {
         MobileAds.initialize(this, getString(R.string.ad_id));
         initAddMob();
 
-        String from = getIntent().getExtras().getString(FROM);
-        String to = getIntent().getExtras().getString(TO);
-        String type = getIntent().getExtras().getString(TYPE);
+        if(getIntent().getExtras() != null) {
+            String from = getIntent().getExtras().getString(FROM);
+            String to = getIntent().getExtras().getString(TO);
+            String type = getIntent().getExtras().getString(TYPE);
 
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mRetrofitInterface = RetrofitClient.getRetrofitClient()
-                .create(RetrofitInterface.class);
+            RetrofitInterface retrofitInterface = RetrofitClient.getRetrofitClient()
+                    .create(RetrofitInterface.class);
 
-        mProgressBar.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.VISIBLE);
 
-        Call<HashMap<String,List<RouteDetails>>> call = mRetrofitInterface.getRouteDetails(from, to, type);
-        call.enqueue(new Callback<HashMap<String, List<RouteDetails>>>() {
-            @Override
-            public void onResponse(Call<HashMap<String, List<RouteDetails>>> call, Response<HashMap<String, List<RouteDetails>>> response) {
-                Log.d(TAG, "onResponse: " + response.body().size());
-                mProgressBar.setVisibility(View.GONE);
-                HashMap<String, List<RouteDetails>> hashMap = response.body();
+            Call<HashMap<String, List<RouteDetails>>> call = retrofitInterface.getRouteDetails(from, to, type);
+            call.enqueue(new Callback<HashMap<String, List<RouteDetails>>>() {
+                @Override
+                public void onResponse(@NonNull Call<HashMap<String, List<RouteDetails>>> call, @NonNull Response<HashMap<String, List<RouteDetails>>> response) {
+                    mProgressBar.setVisibility(View.GONE);
+                    HashMap<String, List<RouteDetails>> hashMap = response.body();
+                    if (hashMap != null && hashMap.entrySet().iterator().hasNext()) {
+                        Log.d(TAG, "onResponse: " + hashMap.size());
+                        Map.Entry<String, List<RouteDetails>> entry = hashMap.entrySet().iterator().next();
+                        mRoute = new Route(entry.getValue());
 
-                if(hashMap != null) {
+                        final RouteFragmentPagerAdapter adapter = new RouteFragmentPagerAdapter(getApplicationContext(), hashMap, getSupportFragmentManager());
+                        mRouteViewPager.setAdapter(adapter);
 
-                    Map.Entry<String,List<RouteDetails>> entry = hashMap.entrySet().iterator().next();
-                    mRoute = new Route(entry.getValue());
-                    final RouteFragmentPagerAdapter adapter = new RouteFragmentPagerAdapter(getApplicationContext(), response.body(), getSupportFragmentManager());
-                    mRouteViewPager.setAdapter(adapter);
+                        mRouteCountTextView.setText(adapter.getPageTitle(mRouteViewPager.getCurrentItem()));
 
-                    mRouteCountTextView.setText(adapter.getPageTitle(mRouteViewPager.getCurrentItem()));
+                        mRouteViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                            @Override
+                            public void onPageScrolled(int i, float v, int i1) {
 
-                    mRouteViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                        @Override
-                        public void onPageScrolled(int i, float v, int i1) {
+                            }
 
-                        }
+                            @Override
+                            public void onPageSelected(int i) {
+                                mRouteCountTextView.setText(adapter.getPageTitle(i));
+                            }
 
-                        @Override
-                        public void onPageSelected(int i) {
-                            mRouteCountTextView.setText(adapter.getPageTitle(i));
-                        }
+                            @Override
+                            public void onPageScrollStateChanged(int i) {
 
-                        @Override
-                        public void onPageScrollStateChanged(int i) {
+                            }
+                        });
 
-                        }
-                    });
+                        mNextButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mRouteViewPager.setCurrentItem(mRouteViewPager.getCurrentItem() + 1);
 
-                    mNextButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mRouteViewPager.setCurrentItem(mRouteViewPager.getCurrentItem() + 1);
+                            }
+                        });
 
-                        }
-                    });
-
-                    mPreviousButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mRouteViewPager.setCurrentItem(mRouteViewPager.getCurrentItem() - 1);
-                        }
-                    });
-                } else {
-                    Toast.makeText(ResultActivity.this, getString(R.string.error_message), Toast.LENGTH_SHORT).show();
+                        mPreviousButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mRouteViewPager.setCurrentItem(mRouteViewPager.getCurrentItem() - 1);
+                            }
+                        });
+                    } else {
+                        Toast.makeText(ResultActivity.this, getString(R.string.error_message), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<HashMap<String, List<RouteDetails>>> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.toString());
-            }
-        });
+                @Override
+                public void onFailure(@NonNull Call<HashMap<String, List<RouteDetails>>> call, @NonNull Throwable t) {
+                    Log.d(TAG, "onFailure: " + t.toString());
+                }
+            });
+        } else {
+            SnackbarFactory.makeSnackBar(this, mParentLayout, getString(R.string.no_input), false);
+        }
     }
 
     private void initAddMob() {
@@ -162,13 +164,13 @@ public class ResultActivity extends AppCompatActivity {
 
         int selectedId = item.getItemId();
 
-        if(selectedId == android.R.id.home) {
+        if (selectedId == android.R.id.home) {
             overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             finish();
             return true;
-        } else if(selectedId == R.id.action_add_to_widget) {
+        } else if (selectedId == R.id.action_add_to_widget) {
             String message;
-            if(mRoute != null) {
+            if (mRoute != null) {
                 BusWidgetService.updateWidget(this, mRoute);
                 message = getString(R.string.added_to_widget);
             } else {

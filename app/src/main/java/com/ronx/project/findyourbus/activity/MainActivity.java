@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Called when a user swipes left or right on a ViewHolder
             @Override
-            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 // Here is where you'll implement swipe to delete
                 new AsyncTask<Void, Void, Void>() {
                     @Override
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 locationLists.add((String) jsonArray.get(i));
             }
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, locationLists);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, locationLists);
             mFromAutoTextView.setThreshold(1);
             mToAutoTextView.setThreshold(1);
             mFromAutoTextView.setAdapter(arrayAdapter);
@@ -195,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String loadJSONFromAsset() {
-        String json = null;
+        String json;
         try {
             InputStream is = getAssets().open("bus_list.json");
             int size = is.available();

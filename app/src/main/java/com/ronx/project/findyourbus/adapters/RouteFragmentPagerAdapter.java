@@ -14,24 +14,20 @@ import com.ronx.project.findyourbus.model.RouteDetails;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 public class RouteFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
-    private HashMap<String, List<RouteDetails>> mListHashMap;
     private List<String> mRoutes = new ArrayList<>();
     private List<List<RouteDetails>> mRoutesListOfList = new ArrayList<>();
 
     public RouteFragmentPagerAdapter(Context context, HashMap<String, List<RouteDetails>> listHashMap, FragmentManager fm) {
         super(fm);
         mContext = context;
-        mListHashMap = listHashMap;
-        Iterator it = listHashMap.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
+        for (Object o : listHashMap.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
             mRoutes.add((String) pair.getKey());
             mRoutesListOfList.add((List<RouteDetails>) pair.getValue());
         }

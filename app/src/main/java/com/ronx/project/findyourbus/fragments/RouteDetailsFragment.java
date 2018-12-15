@@ -23,7 +23,6 @@ import butterknife.Unbinder;
 public class RouteDetailsFragment extends Fragment {
 
     public static final String STEP_KEY = "step_key";
-    private static final String POSITION_KEY = "position_key";
 
     @BindView(R.id.rv_single_hop_item)
     RecyclerView mSingleRouteRecyclerView;

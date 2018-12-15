@@ -14,6 +14,7 @@ import com.ronx.project.findyourbus.model.RouteDetails;
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
 
 public class SingleRouteAdapter extends RecyclerView.Adapter<SingleRouteAdapter.SingleRouteViewHolder> {
 
-    public static final String TAG = SingleRouteAdapter.class.getSimpleName();
+    private static final String TAG = SingleRouteAdapter.class.getSimpleName();
 
     private Context mContext;
     private List<RouteDetails> mRouteDetailsList;
@@ -42,7 +43,7 @@ public class SingleRouteAdapter extends RecyclerView.Adapter<SingleRouteAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull SingleRouteViewHolder holder, int position) {
-                holder.bind(position);
+        holder.bind(position);
     }
 
     @Override
@@ -50,7 +51,7 @@ public class SingleRouteAdapter extends RecyclerView.Adapter<SingleRouteAdapter.
         return mRouteDetailsList.size();
     }
 
-    public class SingleRouteViewHolder extends RecyclerView.ViewHolder {
+    class SingleRouteViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.hop_no)
         TextView mHopNoTextView;
@@ -64,27 +65,30 @@ public class SingleRouteAdapter extends RecyclerView.Adapter<SingleRouteAdapter.
         TextView mDurationTextView;
         @BindView(R.id.rv_bus_nos)
         RecyclerView mBusNoRecycleView;
-        public SingleRouteViewHolder(@NonNull View itemView) {
+
+        SingleRouteViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(int position) {
+        void bind(int position) {
             RouteDetails routeDetails = mRouteDetailsList.get(position);
             mFromTextView.setText(routeDetails.getFrom());
-            mHopNoTextView.setText(String.format("Hop: %s", routeDetails.getHop()));
+            mHopNoTextView.setText(String.format(mContext.getString(R.string.hop_string), routeDetails.getHop()));
             mToTextView.setText(routeDetails.getTo());
             mDistanceTextView.setText(routeDetails.getDistance());
             mDurationTextView.setText(routeDetails.getDuration());
 
             String busNo = routeDetails.getBusNo();
-            String [] splitArrays = busNo.split(", ");
             List<String> busNoList = new ArrayList<>();
-            for(String s : splitArrays) {
-                busNoList.add(s);
+            if (busNo == null) {
+                busNoList.add(mContext.getString(R.string.no_bus));
+            } else {
+                String[] splitArrays = busNo.split(", ");
+                Collections.addAll(busNoList, splitArrays);
             }
 
-            Log.d(TAG, "bind: bustlistSize = " + busNoList.size());
+            Log.d(TAG, mContext.getString(R.string.busListSize) + busNoList.size());
 
             FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
             flowLayoutManager.setAutoMeasureEnabled(true);

@@ -31,4 +31,14 @@
     <string name="cancel_button">Cancel Button</string>
     <string name="dash_line">Dash Line</string>
     <string name="bus_image">Bus Forward Image</string>
+    <string name="no_bus">No bus available for this route!</string>
+    <string name="no_input">No input available for getting results!</string>
+    <string name="hop_string">Hop: %s</string>
+    <string name="busListSize">bind: buslistSize =</string>
+    <string name="widget_from">From:</string>
+    <string name="widget_to">To:</string>
+    <string name="google_singin_fail">Google SignIn failed!</string>
+    <string name="auth_success">Authentication Successful!</string>
+    <string name="auth_fail">Authentication Failed! Please try again!</string>
+    <string name="search_data_not_available">Search data unavailable! Please add it from the app to view it :)</string>
 </resources>

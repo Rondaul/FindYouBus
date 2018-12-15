@@ -26,7 +26,7 @@ public class SearchEntry {
         this.updatedAt = updatedAt;
     }
 
-    public SearchEntry(int id, String from, String to, String type, Date updatedAt) {
+    SearchEntry(int id, String from, String to, String type, Date updatedAt) {
         this.id = id;
         this.from = from;
         this.to = to;

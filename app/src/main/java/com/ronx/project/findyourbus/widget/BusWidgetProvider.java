@@ -28,12 +28,14 @@ public class BusWidgetProvider extends AppWidgetProvider {
             // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.bus_widget_provider);
 
-            views.setTextViewText(R.id.tv_from, "From: " + route.getRouteDetailsList().get(0).getFrom());
-            views.setTextViewText(R.id.tv_to, "To: " + route.getRouteDetailsList().get(0).getTo());
+            views.setTextViewText(R.id.recent_search, context.getString(R.string.recent_search));
+            views.setTextViewText(R.id.tv_from, context.getString(R.string.widget_from) + route.getRouteDetailsList().get(0).getFrom());
+            views.setTextViewText(R.id.tv_to, context.getString(R.string.widget_to) + route.getRouteDetailsList().get(0).getTo());
 
             // Widgets allow click handlers to only launch pending intents
             views.setOnClickPendingIntent(R.id.recent_search, pendingIntent);
-//            views.setOnClickPendingIntent(R.id.lv_search, pendingIntent);
+            views.setOnClickPendingIntent(R.id.tv_from, pendingIntent);
+            views.setOnClickPendingIntent(R.id.tv_to, pendingIntent);
 
             // Initialize the list view
             Intent intent = new Intent(context, BusWidgetService.class);
