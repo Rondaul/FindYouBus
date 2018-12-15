@@ -5,12 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Explode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -44,7 +42,6 @@ public class ResultActivity extends AppCompatActivity {
     public static final String TO = "to";
     public static final String FROM = "from";
     public static final String TYPE = "type";
-    private static final String PROGRESSBAR_STATUS = "progressbar_status";
 
     @BindView(R.id.route_viewpager)
     ViewPager mRouteViewPager;
@@ -68,16 +65,6 @@ public class ResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            // inside your activity (if you did not enable transitions in your theme)
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-// set an enter transition
-            getWindow().setEnterTransition(new Explode());
-// set an exit transition
-            getWindow().setExitTransition(new Explode());
-
-        }
 
         setContentView(R.layout.activity_result);
         ButterKnife.bind(this);

@@ -45,7 +45,7 @@ public class RouteFragmentPagerAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return String.format(mContext.getString(R.string.route), position);
+        return String.format(mContext.getString(R.string.route), position + 1);
     }
 
     @Override

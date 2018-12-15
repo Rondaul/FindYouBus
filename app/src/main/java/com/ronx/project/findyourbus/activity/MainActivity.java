@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
             getWindow().setExitTransition(explode);
 
         }
+
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
